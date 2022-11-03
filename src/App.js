@@ -1,5 +1,7 @@
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+
+import { createLogger } from 'redux-logger';
 
 import './style.css';
 
@@ -8,6 +10,8 @@ export default function App() {
   const GET_CAKE = 'GET_CAKE';
   const FILL_CAKE = 'FILL_CAKE';
   const FILL_ICE = 'FILL_ICE';
+  const logger = createLogger();
+  const middleWare = [logger];
 
   //Action reducers
   function orderCake() {
@@ -83,7 +87,7 @@ export default function App() {
     ice: iceReducer,
   });
 
-  const store = createStore(reducers);
+  const store = createStore(reducers, applyMiddleware(...middleWare));
   const unsubscribe = store.subscribe(() => console.log(store.getState()));
   store.dispatch(orderCake());
   store.dispatch(orderCake());
